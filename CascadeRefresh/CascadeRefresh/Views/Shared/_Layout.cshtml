@@ -1,0 +1,74 @@
+﻿@using CascadeRefresh.Resources
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        @ViewBag.Title - @Brand.BrandName
+    </title>
+    @Styles.Render("~/Content/css")
+    @RenderSection("css", false)
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink(Brand.BrandName, "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Api", "Api", "Home")</li>
+                    <li>@Html.ActionLink("Issues and offers", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Demo(Usage Examples)", "Index", "Demo")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>
+                &copy; @DateTime.Now.Year - @Brand.BrandName
+            </p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @RenderSection("StaticPopups",false)
+
+    <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Ваш запрос отправлен!</h4>
+                </div>
+                <div class="modal-body">
+                    <h5>Мы получили Ваш запрос, мы свяжемся с вами в ближайшее время!</h5>
+                </div>
+                <div class="modal-footer">
+                    <h4 class="pull-left">С уважением искренне ваши Rise-Sales</h4>
+                    <a class="btn btn-default pull-right" data-dismiss="modal">Закрыть</a>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
