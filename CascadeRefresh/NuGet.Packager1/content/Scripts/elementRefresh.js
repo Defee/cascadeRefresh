@@ -4,17 +4,6 @@
     $.fn.exists = function () {
         return $(this).length > 0;
     };
-    function getFunction(code, argNames) {
-        var fn = window, parts = (code || "").split(".");
-        while (fn && parts.length) {
-            fn = fn[parts.shift()];
-        }
-        if (typeof (fn) === "function") {
-            return fn;
-        }
-        argNames.push(code);
-        return Function.constructor.apply(null, argNames);
-    }
     function callFunction(functionName, context /*, args */) {
         var args = [].slice.call(arguments).splice(2);
         var namespaces = functionName.split(".");
@@ -189,47 +178,12 @@
                 data: model,
                 contentType: contentType,
                 traditional: isTraditional,
-                success: function (data, status, jqXhr) {
-                    var onSuccessAttr = el.getAttribute("data-ajax-success");
-                    if (onSuccessAttr != undefined) {
-                        var result;
-                        if (el.getAttribute('data-override-defaultDone')) {
-                            result =getFunction(onSuccessAttr, ["data", "status", "jqXhr"]).apply(el, arguments);    
-                        } else {
-                            defaultDone(data, status, jqXhr);
-                            result =getFunction(onSuccessAttr, ["data", "status", "jqXhr"]).apply(el, arguments);    
-                        }
-                    } else {
-                        defaultDone(data, status, jqXhr);
-                    }
-                    $(el).trigger('refresh.RefreshComplited');
-                },
-                error: function (jqXhr, status, error) {
-                    console.log("Error occured processing your request");
-                    console.log(jqXhr);
-                    console.log(status);
-                    console.log(error);
-                    getFunction(el.getAttribute("data-ajax-error"), ["jqXhr", "status", "error"]).apply(el, arguments);
-                },
-                beforeSend:
-                    function(jqXhr) {
-                        var result;
-                        result = getFunction(el.getAttribute("data-ajax-send"), ["jqXhr"]).apply(el, arguments);
-                        if (result !== false) {
-                            //loading.show(duration);
-                        }
-                        return result;
-                    },
-                complete: function (jqXhr, status) {
-                    //loading.hide(duration);
-                    getFunction(el.getAttribute("data-ajax-complete"), ["jqXhr", "status"]).apply(el, arguments);
-                }
-
+                success: defaultDone
             };
 
             $.ajax(ajaxOptions);//.done(defaultDone);
 
-            
+            $(el).trigger('refresh.RefreshComplited');
         };
 
         plugin.init();

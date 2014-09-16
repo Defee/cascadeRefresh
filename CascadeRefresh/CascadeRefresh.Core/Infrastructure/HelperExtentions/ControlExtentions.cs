@@ -9,7 +9,7 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
 {
     public static class ControlExtentions
     {
-        public static MvcHtmlString CascadeRefresh(this MvcHtmlString control,CascadeOptions options)
+        public static MvcHtmlString CascadeRefresh(this MvcHtmlString control, CascadeOptions options)
         {
             var tagBuilder = control.ToTagBuilder();
             tagBuilder.Key.MergeAttributes(options.OptionsToDictionary);
@@ -22,25 +22,25 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
             return new MvcHtmlString(tagBuilder.Key.ToString(tagBuilder.Value));
         }
 
-        public static KeyValuePair<TagBuilder,TagRenderMode> ToTagBuilder(this MvcHtmlString control)
+        public static KeyValuePair<TagBuilder, TagRenderMode> ToTagBuilder(this MvcHtmlString control)
         {
             var xDoc = XDocument.Parse(control.ToHtmlString());
             var firtsNode = xDoc.FirstNode;
             var htmlElement = (XElement)firtsNode;
             var selfClosing = htmlElement.IsEmpty ? TagRenderMode.SelfClosing : TagRenderMode.Normal;
-            var nodeName =htmlElement.Name;
+            var nodeName = htmlElement.Name;
 
             var tagBuilder = new TagBuilder(nodeName.ToString());
-            var attrs =htmlElement.Attributes();
-            tagBuilder.MergeAttributes(attrs.ToDictionary(key=> key.Name,value=>value.Value));
+            var attrs = htmlElement.Attributes();
+            tagBuilder.MergeAttributes(attrs.ToDictionary(key => key.Name, value => value.Value));
 
             if (selfClosing != TagRenderMode.Normal)
                 return new KeyValuePair<TagBuilder, TagRenderMode>(tagBuilder, selfClosing);
-            
+
             var sb = new StringBuilder();
             foreach (var xNode in htmlElement.Nodes())
                 sb.Append(xNode);
-            tagBuilder.InnerHtml=sb.ToString();
+            tagBuilder.InnerHtml = sb.ToString();
 
             return new KeyValuePair<TagBuilder, TagRenderMode>(tagBuilder, selfClosing);
         }
@@ -49,19 +49,82 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
     public class SelfRefreshTargetOptions
     {
         private readonly IDictionary<string, string> _refreshTargetAttrs = new Dictionary<string, string>();
-        
-          #region defaultBindings 
-private const string UrlBinding = "data-url";
+
+        #region defaultBindings
+        private const string UrlBinding = "data-url";
         private const string DataTypeBinding = "data-dataType";
         private const string ContentTypeBinding = "data-contentType";
-        private const string MethodBinding = "data-contentType"; 
+        private const string MethodBinding = "data-contentType";
         private const string ClearDataBinding = "data-clear-onRefresh";
-        private const string PropertyNameBinding = "data-use-as-name"; 
+        private const string PropertyNameBinding = "data-use-as-name";
         private const string TargetBinding = "data-target";
         private const string AjaxCacheBinding = "data-cache";
         private const string TraditionalBinding = "data-traditional";
         private const string DependeciesBinding = "data-dependent-on";
-          #endregion 
+        private const string OnSuccessBinding = "data-ajax-success";
+        private const string OnErrorBinding = "data-ajax-error";
+        private const string OnSendBinding = "data-ajax-send";
+        private const string OnCompliteBinding = "data-ajax-complite";
+        private const string OverrideOnSuccessDefaultBehaviourBinding = "data-override-defaultDone";
+        #endregion
+        public string OnComplite
+        {
+            get
+            {
+                return _refreshTargetAttrs.ContainsKey(OnCompliteBinding) ? _refreshTargetAttrs[OnCompliteBinding] : String.Empty;
+            }
+            set
+            {
+                if (!_refreshTargetAttrs.ContainsKey(OnCompliteBinding))
+                    _refreshTargetAttrs.Add(OnCompliteBinding, value);
+                else
+                    _refreshTargetAttrs[OnCompliteBinding] = value;
+            }
+        }
+        public string OnSuccess
+        {
+            get
+            {
+                return _refreshTargetAttrs.ContainsKey(OnSuccessBinding) ? _refreshTargetAttrs[OnSuccessBinding] : String.Empty;
+            }
+            set
+            {
+                if (!_refreshTargetAttrs.ContainsKey(OnSuccessBinding))
+                    _refreshTargetAttrs.Add(OnSuccessBinding, value);
+                else
+                    _refreshTargetAttrs[OnSuccessBinding] = value;
+            }
+        }
+
+        public string OnSend
+        {
+            get
+            {
+                return _refreshTargetAttrs.ContainsKey(OnSendBinding) ? _refreshTargetAttrs[OnSendBinding] : String.Empty;
+            }
+            set
+            {
+                if (!_refreshTargetAttrs.ContainsKey(OnSendBinding))
+                    _refreshTargetAttrs.Add(OnSendBinding, value);
+                else
+                    _refreshTargetAttrs[OnSendBinding] = value;
+            }
+        }
+
+        public string OnError
+        {
+            get
+            {
+                return _refreshTargetAttrs.ContainsKey(OnErrorBinding) ? _refreshTargetAttrs[OnErrorBinding] : String.Empty;
+            }
+            set
+            {
+                if (!_refreshTargetAttrs.ContainsKey(OnErrorBinding))
+                    _refreshTargetAttrs.Add(OnErrorBinding, value);
+                else
+                    _refreshTargetAttrs[OnErrorBinding] = value;
+            }
+        }
         void SetDependencies(string obj)
         {
             if (!_refreshTargetAttrs.ContainsKey(DependeciesBinding))
@@ -77,7 +140,7 @@ private const string UrlBinding = "data-url";
 
             var sb = new StringBuilder();
             foreach (var propertyInfo in obj.GetType().GetProperties())
-                sb.Append("#" + propertyInfo.Name +";");
+                sb.Append("#" + propertyInfo.Name + ";");
 
             if (!_refreshTargetAttrs.ContainsKey(DependeciesBinding))
                 _refreshTargetAttrs.Add(DependeciesBinding, sb.ToString());
@@ -85,8 +148,20 @@ private const string UrlBinding = "data-url";
                 _refreshTargetAttrs[DependeciesBinding] = sb.ToString();
         }
 
-
-
+        public bool OverrideStandardtOnSuccessBehavior
+        {
+            get
+            {
+                return Boolean.Parse(_refreshTargetAttrs.ContainsKey(OverrideOnSuccessDefaultBehaviourBinding) ? _refreshTargetAttrs[OverrideOnSuccessDefaultBehaviourBinding] : String.Empty);
+            }
+            set
+            {
+                if (!_refreshTargetAttrs.ContainsKey(OverrideOnSuccessDefaultBehaviourBinding))
+                    _refreshTargetAttrs.Add(OverrideOnSuccessDefaultBehaviourBinding, value.ToString().ToLower());
+                else
+                    _refreshTargetAttrs[OverrideOnSuccessDefaultBehaviourBinding] = value.ToString().ToLower();
+            }
+        }
         public bool Traditional
         {
             get
@@ -129,7 +204,6 @@ private const string UrlBinding = "data-url";
                     _refreshTargetAttrs[TargetBinding] = value;
             }
         }
-
         public string PropertyName
         {
             get
@@ -218,7 +292,7 @@ private const string UrlBinding = "data-url";
                 else
                     _refreshTargetAttrs[UrlBinding] = value;
             }
-        } 
+        }
         public object Dependecies
         {
             get
@@ -233,7 +307,7 @@ private const string UrlBinding = "data-url";
                     SetDependencies(value);
             }
         }
-        public IDictionary<string,string> OptionsToDictionary
+        public IDictionary<string, string> OptionsToDictionary
         {
             get
             {
@@ -248,12 +322,12 @@ private const string UrlBinding = "data-url";
         {
             { "data-cascade", "true" }
         };
-        #region defaultBindings 
+        #region defaultBindings
 
-        
-        
-       
-       
+
+
+
+
 
         private const string RefreshTargetsBinding = "data-refresh-targets";
         #endregion
@@ -293,7 +367,7 @@ private const string UrlBinding = "data-url";
                     SetRefreshTargets(value);
             }
         }
-        public IDictionary<string,string> OptionsToDictionary
+        public IDictionary<string, string> OptionsToDictionary
         {
             get
             {
@@ -301,6 +375,6 @@ private const string UrlBinding = "data-url";
             }
         }
 
-        
+
     }
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CascadeRefresh.Package", "N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CascadeRefresh", "CascadeRefresh\CascadeRefresh.csproj", "{F28676D5-1118-4A2C-866A-DC0B1836C60B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CascadeRefresh.Core", "CascadeRefresh.Core\CascadeRefresh.Core.csproj", "{BCA7A610-FA61-4706-A3FB-8A01F679E7F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F28676D5-1118-4A2C-866A-DC0B1836C60B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F28676D5-1118-4A2C-866A-DC0B1836C60B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F28676D5-1118-4A2C-866A-DC0B1836C60B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA7A610-FA61-4706-A3FB-8A01F679E7F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA7A610-FA61-4706-A3FB-8A01F679E7F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA7A610-FA61-4706-A3FB-8A01F679E7F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA7A610-FA61-4706-A3FB-8A01F679E7F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

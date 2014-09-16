@@ -205,9 +205,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\ControllerExtentions\ControllerExtentions.cs" />
-    <Compile Include="Infrastructure\CustomActionResults\JsonpResult.cs" />
-    <Compile Include="Infrastructure\HelperExtentions\ControlExtentions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Brand.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -343,17 +340,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IShop.DAL.Interop\IShop.DAL.Interop.csproj">
-      <Project>{B3417BD6-8014-4A3C-8425-8F1F98861B74}</Project>
-      <Name>IShop.DAL.Interop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IShop.DAL\IShop.DAL.csproj">
-      <Project>{475f0a54-e027-4aed-a429-e67536d3aa3c}</Project>
-      <Name>IShop.DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\piroolabs.com.DTO\IShop.DTO.csproj">
-      <Project>{676345AA-E9C9-4CF6-AAF6-E75873034248}</Project>
-      <Name>IShop.DTO</Name>
+    <ProjectReference Include="..\CascadeRefresh.Core\CascadeRefresh.Core.csproj">
+      <Project>{bca7a610-fa61-4706-a3fb-8a01f679e7f8}</Project>
+      <Name>CascadeRefresh.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
