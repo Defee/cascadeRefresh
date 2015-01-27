@@ -7,14 +7,29 @@ using System.Xml.Linq;
 
 namespace CascadeRefresh.Infrastructure.HelperExtentions
 {
+    /// <summary>
+    /// Extentions for controls Interpreted as MvcHtmlString
+    /// </summary>
     public static class ControlExtentions
     {
+        /// <summary>
+        /// This extention adds attributes for CascadeRefresh plugin to a standard Mvc control  
+        /// </summary>
+        /// <param name="control">Interpreted as MvcHtml string control</param>
+        /// <param name="options">Cascade refresh options</param>
+        /// <returns>Extended Html control as MvcHtml string</returns>
         public static MvcHtmlString CascadeRefresh(this MvcHtmlString control, CascadeOptions options)
         {
             var tagBuilder = control.ToTagBuilder();
             tagBuilder.Key.MergeAttributes(options.OptionsToDictionary);
             return new MvcHtmlString(tagBuilder.Key.ToString(tagBuilder.Value));
         }
+        /// <summary>
+        /// This extention adds attributes for SelfRefresh plugin actions to a standard Mvc control
+        /// </summary>
+        /// <param name="control">Interpreted as MvcHtml string control</param>
+        /// <param name="options">Self resfresh options</param>
+        /// <returns></returns>
         public static MvcHtmlString SelfResfreshTarget(this MvcHtmlString control, SelfRefreshTargetOptions options)
         {
             var tagBuilder = control.ToTagBuilder();
@@ -22,6 +37,11 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
             return new MvcHtmlString(tagBuilder.Key.ToString(tagBuilder.Value));
         }
 
+        /// <summary>
+        /// This xxtention transforms an MvcTag to TagBuilder
+        /// </summary>
+        /// <param name="control">Interpreted as MvcHtml string control</param>
+        /// <returns>KEy Value Pair  Key is a tag. Value is its rener mode</returns>
         public static KeyValuePair<TagBuilder, TagRenderMode> ToTagBuilder(this MvcHtmlString control)
         {
             var xDoc = XDocument.Parse(control.ToHtmlString());
@@ -46,6 +66,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
         }
     }
 
+    /// <summary>
+    /// It is Self refresh Target Options object. It describes the ajax request that will be sent to the server to refresh the element.
+    /// </summary>
     public class SelfRefreshTargetOptions
     {
         private readonly IDictionary<string, string> _refreshTargetAttrs = new Dictionary<string, string>();
@@ -54,7 +77,7 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
         private const string UrlBinding = "data-url";
         private const string DataTypeBinding = "data-dataType";
         private const string ContentTypeBinding = "data-contentType";
-        private const string MethodBinding = "data-contentType";
+        private const string MethodBinding = "data-method";
         private const string ClearDataBinding = "data-clear-onRefresh";
         private const string PropertyNameBinding = "data-use-as-name";
         private const string TargetBinding = "data-target";
@@ -66,7 +89,11 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
         private const string OnSendBinding = "data-ajax-send";
         private const string OnCompliteBinding = "data-ajax-complite";
         private const string OverrideOnSuccessDefaultBehaviourBinding = "data-override-defaultDone";
+       
         #endregion
+        /// <summary>
+        /// It is a name of javascript function to execute on complete of the ajax request
+        /// </summary>
         public string OnComplite
         {
             get
@@ -81,6 +108,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[OnCompliteBinding] = value;
             }
         }
+        /// <summary>
+        ///  It is a name of javascript function to execute on success of the ajax request
+        /// </summary>
         public string OnSuccess
         {
             get
@@ -95,7 +125,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[OnSuccessBinding] = value;
             }
         }
-
+        /// <summary>
+        ///  It is a name of javascript function to execute befire sending the ajax request
+        /// </summary>
         public string OnSend
         {
             get
@@ -110,7 +142,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[OnSendBinding] = value;
             }
         }
-
+        /// <summary>
+        ///  It is a name of javascript function to execute on error of the ajax request
+        /// </summary>
         public string OnError
         {
             get
@@ -125,15 +159,24 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[OnErrorBinding] = value;
             }
         }
-        void SetDependencies(string obj)
+
+        /// <summary>
+        /// Sets Dependencies from string
+        /// </summary>
+        /// <param name="obj"></param>
+        private void SetDependencies(string obj)
         {
             if (!_refreshTargetAttrs.ContainsKey(DependeciesBinding))
                 _refreshTargetAttrs.Add(DependeciesBinding, obj);
             else
                 _refreshTargetAttrs[DependeciesBinding] = obj;
         }
-        public bool DependenciesAsSelectors { get; set; }
-        void SetDependencies(object obj)
+
+        /// <summary>
+        /// Sets dependencies from object
+        /// </summary>
+        /// <param name="obj"></param>
+        private void SetDependencies(object obj)
         {
             if (DependenciesAsSelectors)
                 return;
@@ -148,6 +191,14 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                 _refreshTargetAttrs[DependeciesBinding] = sb.ToString();
         }
 
+        /// <summary>
+        /// The dependencies value is selectors  flag
+        /// </summary>
+        public bool DependenciesAsSelectors { get; set; }
+
+        /// <summary>
+        /// Indicates if the on success standard behavier should be overriden.
+        /// </summary>
         public bool OverrideStandardtOnSuccessBehavior
         {
             get
@@ -162,6 +213,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[OverrideOnSuccessDefaultBehaviourBinding] = value.ToString().ToLower();
             }
         }
+        /// <summary>
+        /// Is traditional flag
+        /// </summary>
         public bool Traditional
         {
             get
@@ -176,6 +230,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[TraditionalBinding] = value.ToString().ToLower();
             }
         }
+        /// <summary>
+        /// Enables or disables ajax caching in browser
+        /// </summary>
         public bool AjaxCache
         {
             get
@@ -190,6 +247,10 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[AjaxCacheBinding] = value.ToString().ToLower();
             }
         }
+
+        /// <summary>
+        /// Target Html element selector
+        /// </summary>
         public string Target
         {
             get
@@ -204,6 +265,7 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[TargetBinding] = value;
             }
         }
+
         public string PropertyName
         {
             get
@@ -218,7 +280,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[PropertyNameBinding] = value;
             }
         }
-
+        /// <summary>
+        /// Flag for clearing previous data
+        /// </summary>
         public string ClearData
         {
             get
@@ -233,7 +297,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[ClearDataBinding] = value;
             }
         }
-
+        /// <summary>
+        /// Http Get or Http Post Method
+        /// </summary>
         public string Method
         {
             get
@@ -248,7 +314,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[MethodBinding] = value;
             }
         }
-
+        /// <summary>
+        /// Content Type
+        /// </summary>
         public string ContentType
         {
             get
@@ -263,7 +331,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[ContentTypeBinding] = value;
             }
         }
-
+        /// <summary>
+        /// Data Type
+        /// </summary>
         public string DataType
         {
             get
@@ -272,13 +342,15 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
             }
             set
             {
-                if (!_refreshTargetAttrs.ContainsKey(UrlBinding))
+                if (!_refreshTargetAttrs.ContainsKey(DataTypeBinding))
                     _refreshTargetAttrs.Add(DataTypeBinding, value);
                 else
                     _refreshTargetAttrs[DataTypeBinding] = value;
             }
         }
-
+        /// <summary>
+        /// Url for processing the ajax request
+        /// </summary>
         public string Url
         {
             get
@@ -293,6 +365,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
                     _refreshTargetAttrs[UrlBinding] = value;
             }
         }
+        /// <summary>
+        /// Dependencies of an element from an elements on the page.
+        /// </summary>
         public object Dependecies
         {
             get
@@ -301,12 +376,16 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
             }
             set
             {
-                if (value as string != null)
-                    SetDependencies(value as string);
+                var dependencies = value as string;
+                if (dependencies != null)
+                    SetDependencies(dependencies);
                 else
                     SetDependencies(value);
             }
         }
+        /// <summary>
+        /// Transforms options to dictionary
+        /// </summary>
         public IDictionary<string, string> OptionsToDictionary
         {
             get
@@ -315,31 +394,62 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
             }
         }
     }
-
+    /// <summary>
+    /// It is Cascade Refresh Options object
+    /// </summary>
     public class CascadeOptions
     {
-        IDictionary<string, string> cascadeAttrs = new Dictionary<string, string>()
+        IDictionary<string, string> cascadeAttrs = new Dictionary<string, string>
         {
             { "data-cascade", "true" }
         };
         #region defaultBindings
-
-
-
-
-
-
         private const string RefreshTargetsBinding = "data-refresh-targets";
+        private const string LoadingElementBinding = "data-loading-element";
+        private const string EnableProgress = "data-enable-progress";
+        
+        
         #endregion
+        /// <summary>
+        /// Selector for a loadingElement
+        /// </summary>
+        public string LoadingElement
+        {
+            get
+            {
+                return cascadeAttrs.ContainsKey(LoadingElementBinding) ? cascadeAttrs[LoadingElementBinding] : String.Empty;
+            }
+            set
+            {
+                if (!cascadeAttrs.ContainsKey(LoadingElementBinding))
+                    cascadeAttrs.Add(EnableProgress,"true");
+
+                if (!cascadeAttrs.ContainsKey(LoadingElementBinding))
+                    cascadeAttrs.Add(LoadingElementBinding, value);
+                else
+                    cascadeAttrs[LoadingElementBinding] = value;
+            }
+        }
+        /// <summary>
+        /// THis flag shows:"Is current Refresh Targets selectors?"
+        /// </summary>
         public bool RefreshTargetsAsSelectors { get; set; }
-        void SetRefreshTargets(string obj)
+        /// <summary>
+        /// Sets Refresh targets
+        /// </summary>
+        /// <param name="obj"></param>
+        private void SetRefreshTargets(string obj)
         {
             if (!cascadeAttrs.ContainsKey(RefreshTargetsBinding))
                 cascadeAttrs.Add(RefreshTargetsBinding, obj);
             else
                 cascadeAttrs[RefreshTargetsBinding] = obj;
         }
-        void SetRefreshTargets(object obj)
+        /// <summary>
+        /// Sets Refresh Targets
+        /// </summary>
+        /// <param name="obj"></param>
+        private void SetRefreshTargets(object obj)
         {
             if (RefreshTargetsAsSelectors)
                 return;
@@ -353,6 +463,9 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
             else
                 cascadeAttrs[RefreshTargetsBinding] = sb.ToString();
         }
+        /// <summary>
+        /// Get or sets refresh targets as object
+        /// </summary>
         public object RefreshTargets
         {
             get
@@ -361,12 +474,17 @@ namespace CascadeRefresh.Infrastructure.HelperExtentions
             }
             set
             {
-                if (value as string != null)
-                    SetRefreshTargets(value as string);
+                var refreshTargets = value as string;
+                if (refreshTargets != null)
+                    SetRefreshTargets(refreshTargets);
                 else
                     SetRefreshTargets(value);
             }
         }
+
+        /// <summary>
+        /// Transforms Options to dictionary object
+        /// </summary>
         public IDictionary<string, string> OptionsToDictionary
         {
             get
