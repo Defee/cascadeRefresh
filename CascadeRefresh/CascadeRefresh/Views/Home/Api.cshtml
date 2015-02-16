@@ -1,2 +1,90 @@
 ﻿
+@section scripts
+{
+    @Scripts.Render("~/bundles/snippet")
+    <script>
+        $(document).ready(function () {
+            $("pre.csharp").snippet("csharp", { style: "ide-msvcpp" }
+                );
+            $("pre.javascript").snippet("javascript", { style: "rand01" }
+                );
 
+           
+        })
+    </script>
+}
+<div class="row">
+    <div class=" col-md-offset-3 col-md-9">
+        <h2>Options</h2>
+
+        <div class="row">
+            <div class="col-md-12">
+                Both plugins(elementRefresh, cascade refresh) have an options that had the following priority:
+                <ul>
+                    <li>html markaup "data-" options.(the most prioritized)</li>
+                    <li>cascadeRefresh options passed to jquery element</li>
+                    <li>plugin globals</li>
+                </ul>
+                So u can override the globals by passing the parameter with html markup, or applying plugin with jquery.
+            </div>
+        </div>
+        <h3>Globals api</h3>
+        <h4>Cascade Refresh</h4>
+        <div class="row">
+            <div class="col-md-3">
+                <pre>
+@("var globalsObj = {" +
+  " bindings: { "
+  + " refreshTargetsBinding: 'data-refresh-targets',"
+  + "  splitterBinding: 'data-splitter',"
+  + "  enableLoadIndicator:'data-enable-progress'"
+  + "},"
+  + " eventName: 'change',"
+  + " loadingElement: '#loadIndicator',"
+  + " enableProgress: false"
+  + "}") 
+</pre>
+                
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-4">bindings</div>
+                    <div class="col-md-8">An object that determines the html markup bindings</div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>binding</th>
+                            <th>description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>refreshTargetsBinding</td>
+                            <td>It binds the name of the html attribute  that is used for the targets wich this element must refresh</td>
+                        </tr>
+                        <tr>
+                            <td>splitterBinding</td>
+                            <td>It binds the name of the html attribute that is used for the splitter separating refresh targets </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                
+                            </td>
+                            <td></td>
+                        </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8"></div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

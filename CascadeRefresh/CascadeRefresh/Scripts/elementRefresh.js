@@ -165,7 +165,7 @@
                 if (dataType == 'json' || dataType == 'jsonp') {
                     var clearPrevious = el.getAttribute(opts.bindings.html.clearData);
                     if (clearPrevious == undefined) clearPrevious = opts.bindings.json.clearData;
-                    switch (actionTarget.attr("tagName")) {
+                    switch (actionTarget[0].tagName.toLowerCase()) {
                         case "input":
                             plugin.parseJsonToInput(actionTarget, data, clearPrevious);
                         break;
