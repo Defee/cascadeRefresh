@@ -170,7 +170,7 @@
                             plugin.parseJsonToInput(actionTarget, data, clearPrevious);
                         break;
                         case "select":
-                            plugin.parseJsonToSelect(el,actionTarget,opts.bindings,data,clearPrevious)
+                            plugin.parseJsonToSelect(el, actionTarget, opts.bindings, data, clearPrevious);
                     break;
                         default:
                             alert("there is no controllers for tag:" + actionTarget.attr("tagName"));
