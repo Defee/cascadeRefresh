@@ -110,18 +110,37 @@
             var jqCaller = $(caller);
             if (caller != null) {
                 var plugin = jqCaller.data('cascadeRefresh');
-                //TODO: Refactor to boolean in local  plugin settings named enable progress.
-                if (plugin != undefined
-                    && (caller.dataset.enableProgress == 'true' ||caller.dataset.enableProgress == 'True')
-                    && caller.dataset.loadingElement != undefined) {
-                    var currentRefreshTargetsCount = parseInt(caller.dataset.currentRefreshTargetsCount);
-                    currentRefreshTargetsCount--;
-                    caller.dataset.currentRefreshTargetsCount = currentRefreshTargetsCount;
-                    if (currentRefreshTargetsCount == 0) {
-                        plugin.hideLoadingElement(caller);
-                       // caller.dataset.currentRefreshTargetsCount = caller.dataset.refreshTargetsCount;
+                
+                //if plugin is initialized
+                if (plugin != undefined) {
+                    //get the plugin settings
+                    var settings = plugin.settings;
+                    //is progress enabled flag
+                    var progress = caller.getAttribute(settings.bindings.enableLoadIndicatorBinding);
+                    //loading element
+                    var loadingElement = caller.getAttribute(settings.bindings.loadIndicatorBinding);
+                    if ((progress == 'true' || progress == 'True')
+                                    && loadingElement != undefined) {
+                        var currentRefreshTargetsCount =
+                            parseInt(caller.getAttribute(settings.bindings.currentRefreshTargetsCountBinding));
+                        currentRefreshTargetsCount--;
+                        caller.setAttribute(settings.bindings.currentRefreshTargetsCountBinding, currentRefreshTargetsCount);
+                        if (currentRefreshTargetsCount == 0) {
+                            plugin.hideLoadingElement(caller,settings);
+                        }
                     }
                 }
+                //if (plugin != undefined
+                //    && (caller.dataset.enableProgress == 'true' ||caller.dataset.enableProgress == 'True')
+                //    && caller.dataset.loadingElement != undefined) {
+                //    var currentRefreshTargetsCount = parseInt(caller.dataset.currentRefreshTargetsCount);
+                //    currentRefreshTargetsCount--;
+                //    caller.dataset.currentRefreshTargetsCount = currentRefreshTargetsCount;
+                //    if (currentRefreshTargetsCount == 0) {
+                //        plugin.hideLoadingElement(caller);
+                //       // caller.dataset.currentRefreshTargetsCount = caller.dataset.refreshTargetsCount;
+                //    }
+                //}
                 
                 
             }

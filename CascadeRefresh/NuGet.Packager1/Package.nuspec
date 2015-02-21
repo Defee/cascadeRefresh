@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>MVC.CascadeRefresh</id>
+    <version>1.0.01</version>
+    <title>Cascade Refresh(Dropdowns) MVC</title>
+    <authors>Alexander Pirogov</authors>
+    <owners>Alexander Pirogov(Original Decisions)</owners>
+    <licenseUrl>http://choosealicense.com/licenses/apache-2.0/</licenseUrl>
+    <projectUrl>https://github.com/Defee/cascadeRefresh</projectUrl>
+    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      It is a plugin that allows you to configure using html markup cascading dropdowns(or dynamic parts of the page).
+      This small solution was adopted for Asp.net mvc with razor sintax.
+      This plugin is based on two main parts(refresh element and refresh targets): element that refreshes the html elements on this page and that elements configure how they have to be refreshed.
+      If you need more info please visit https://github.com/Defee/cascadeRefresh.
+      I appreciate any feedback, so if you have an issues please post it on github.
+    </description>
+    <summary>
+      It is a plugin that allows you to configure using html markup cascading dropdowns(or dynamic parts of the page).
+      This small solution was adopted for Asp.net mvc with razor sintax
+    </summary>
+    <releaseNotes>dependencies bug fix and</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>Cascade Dropdowns Refresh</tags>
+    <dependencies>
+    </dependencies>
+    <frameworkAssemblies>
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    
+  </files>
+</package>

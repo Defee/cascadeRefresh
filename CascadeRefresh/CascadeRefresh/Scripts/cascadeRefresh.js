@@ -1,5 +1,7 @@
 ﻿//Template based on http://www.queness.com/post/112/a-really-simple-jquery-plugin-tutorial
+
 (function ($) {
+    
     //Your plugin's name
     var pluginName = 'cascadeRefresh';
     var executeEmptyAction = function (jObj) {
@@ -109,8 +111,9 @@
         plugin.settings = {};
         var $element = $(element),
             el = element;
-        plugin.showLoadingElement = function (element) {
-            var jqLoadElement = $(element.dataset.loadingElement);
+        plugin.showLoadingElement = function (element,options) {
+            //var jqLoadElement = $(element.dataset.loadingElement);
+            var jqLoadElement = $(element.getAttribute(options.bindings.loadIndicatorBinding));
             if (jqLoadElement.exists()) {
                 if (jqLoadElement.modal != undefined && typeof (jqLoadElement.modal) === "function") {
                     jqLoadElement.modal('show');
@@ -120,8 +123,9 @@
             }
         };
 
-        plugin.hideLoadingElement = function (element) {
-            var jqLoadElement = $(element.dataset.loadingElement);
+        plugin.hideLoadingElement = function (element, options) {
+            //var jqLoadElement = $(element.dataset.loadingElement);
+            var jqLoadElement = $(element.getAttribute(options.bindings.loadIndicatorBinding));
             if (jqLoadElement.exists()) {
                 if (jqLoadElement.modal != undefined && typeof (jqLoadElement.modal) === "function") {
                     jqLoadElement.modal('hide');
@@ -129,6 +133,31 @@
                     jqLoadElement.fadeOut(500);
                 }
             }
+        };
+        plugin.detectIE = function () {
+            var ua = window.navigator.userAgent;
+
+            var msie = ua.indexOf('MSIE ');
+            if (msie > 0) {
+                // IE 10 or older => return version number
+                return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+            }
+
+            var trident = ua.indexOf('Trident/');
+            if (trident > 0) {
+                // IE 11 => return version number
+                var rv = ua.indexOf('rv:');
+                return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+            }
+
+            var edge = ua.indexOf('Edge/');
+            if (edge > 0) {
+                // IE 12 => return version number
+                return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+            }
+
+            // other browser
+            return false;
         };
 
         plugin.init = function () {
@@ -146,17 +175,15 @@
                 var eventOpts = event.data.options;
                 var resfreshTargetsAttr = htmlElement.getAttribute(opts.bindings.refreshTargetsBinding);
                 var targetsSplitter = htmlElement.getAttribute(opts.bindings.splitter);
-                var loadingElement = htmlElement.dataset.loadingElement;
-                var enableProgress = htmlElement.dataset.enableProgress;
+                var loadingElement = htmlElement.getAttribute(opts.bindings.loadIndicatorBinding);//htmlElement.dataset.loadingElement;
+                var enableProgress = htmlElement.getAttribute(opts.bindings.enableLoadIndicatorBinding);//htmlElement.dataset.enableProgress;
 
                 if (targetsSplitter == null)
                     targetsSplitter = eventOpts.targetsSplitter;
                 if (enableProgress == undefined && eventOpts.enableProgress != undefined)
                     enableProgress = eventOpts.enableProgress;
-                if (loadingElement == undefined && eventOpts.loadingElement != undefined) 
-                    element.dataset.loadingElement = eventOpts.loadingElement;
-                
-
+                if (loadingElement == undefined && eventOpts.loadingElement != undefined)
+                    element.setAttribute(opts.bindings.loadIndicatorBinding, opts.loadingElement);
 
                 if (resfreshTargetsAttr != undefined) {
                     var resfreshTargetsSelectors = resfreshTargetsAttr.split(targetsSplitter);
@@ -165,8 +192,9 @@
                     eventOpts.refreshOptions.caller = element;
 
                     if (enableProgress) {
-                        element.dataset.currentRefreshTargetsCount = currentAjaxCalls;
-                        plugin.showLoadingElement(element);
+                        element.setAttribute(opts.bindings.currentRefreshTargetsCountBinding, currentAjaxCalls);
+                        //element.dataset.currentRefreshTargetsCount = currentAjaxCalls;
+                        plugin.showLoadingElement(element,opts);
                     }
                     
                     for (var i = 0; i < resfreshTargetsSelectors.length; i++) {
@@ -174,10 +202,13 @@
                         if (jqRefreshTarget != undefined) {
                             if (enableProgress) {
                                 ajaxCallsCount += jqRefreshTarget.length;
-                                element.dataset.refreshTargetsCount = ajaxCallsCount;
-                                currentAjaxCalls = parseInt(element.dataset.currentRefreshTargetsCount);
+                                element.setAttribute(opts.bindings.refreshTargetsCountBinding, ajaxCallsCount);
+                                //element.dataset.refreshTargetsCount = ajaxCallsCount;
+                                currentAjaxCalls = parseInt(element.getAttribute(opts.bindings.currentRefreshTargetsCountBinding));
+                                //currentAjaxCalls = parseInt(element.dataset.currentRefreshTargetsCount);
                                 currentAjaxCalls += jqRefreshTarget.length;
-                                element.dataset.currentRefreshTargetsCount = currentAjaxCalls;
+                                element.setAttribute(opts.bindings.currentRefreshTargetsCountBinding, currentAjaxCalls);
+                                //element.dataset.currentRefreshTargetsCount = currentAjaxCalls;
                             }
                             
                             jqRefreshTarget.each(function () {
@@ -200,7 +231,12 @@
         bindings: {
             refreshTargetsBinding: 'data-refresh-targets',
             splitterBinding: 'data-splitter',
-            enableLoadIndicator:'data-enable-progress'
+            enableLoadIndicatorBinding: 'data-enable-progress',
+            loadIndicatorBinding: 'data-loading-element',
+            currentRefreshTargetsCountBinding: 'data-current-refresh-targets-count',
+            refreshTargetsCountBinding: 'date-refresh-targets-count'
+
+
         },
         eventName: 'change',
         loadingElement: '#loadIndicator',
@@ -225,7 +261,7 @@
             return this.each(function () {
 
                 var pluginVictim = this;
-                var $pluginVictim = $(this)
+                var $pluginVictim = $(this);
 
                 if (undefined == $pluginVictim.data(pluginName)) {
 
