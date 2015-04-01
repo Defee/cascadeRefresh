@@ -162,10 +162,10 @@ var servObj = @("new Dictionary<string,object>()");
                     <option value="1">China</option>
                     <option value="3">Russia</option>
                 </select>
-                <select id="Region1" data-cascade="true" name="Region1" data-url="@Url.Action("GetRegionJsonp")"
+                <select id="Region1" data-cascade="true" name="Region1" data-empty="disable" data-url="@Url.Action("GetRegionJsonp")"
                         data-datatype="jsonp" data-dependent-on="#Country1" data-refresh-targets="#City1"
                         data-select-full-attributed="true"></select>
-                <select id="City1" data-cascade="true" name="City1" data-url="@Url.Action("GetCityJsonp")"
+                <select id="City1" data-cascade="true" name="City1" data-empty="disable" data-url="@Url.Action("GetCityJsonp")"
                         data-datatype="jsonp" data-dependent-on="#Region1"
                         data-select-full-attributed="true"></select>
             </div>

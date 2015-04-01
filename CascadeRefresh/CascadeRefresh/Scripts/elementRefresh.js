@@ -307,7 +307,8 @@
     };
 
     function showAction(jObj, actionName) {
-        if (actionName == undefined || actionName == false) {
+
+        //if (actionName == undefined || actionName == false) {
             switch (actionName) {
                 case "disable":
                     var disabledAttr = jObj.attr('data-disabled');
@@ -315,8 +316,9 @@
                         jObj.removeAttr('disabled');
                         jObj.removeAttr('data-disabled');
                     }
-
+                    break;
                 default:
+                    debugger;
                     var dataFadedAttr = jObj.attr('data-faded');
 
                     if (dataFadedAttr != undefined) {
@@ -331,7 +333,7 @@
                         jObj.trigger('chosen:updated');
                     }
             }
-        }
+       // }
     }
     $.elementRefresh.setGlobalBindings = function (bindings, bindingType) {
         switch (bindingType) {
