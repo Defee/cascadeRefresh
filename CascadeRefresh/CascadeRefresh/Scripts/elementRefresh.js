@@ -25,7 +25,7 @@
             target: '#' + $element.attr('id'),
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             dataType: 'html',
-            isTraditionsl: true,
+            isTraditional: true,
             ajaxCache: false,
             propertyName: 'name',
             url: window.location.href,
@@ -76,6 +76,9 @@
 
                     $.each(jsonData[optionsBinding], function (key, val) {
                         if ($.isPlainObject(val)) {
+                            
+                            console.log(idBinding);
+                            console.log(nameBinding);
                             jqTarget.append('<option value=' + val[idBinding] + '>' + val[nameBinding] + '</option>');
                         } else {
                             jqTarget.append('<option value=' + key + '>' + val + '</option>');
@@ -288,7 +291,7 @@
                         return result;
                     },
                 complete: function (jqXhr, status) {
-                    debugger;
+                    
                     plugin.processCallerAjaxPackages(opts.caller);
                     $(el).trigger('refresh.RefreshComplited');
 
@@ -318,7 +321,7 @@
                     }
                     break;
                 default:
-                    debugger;
+                    
                     var dataFadedAttr = jObj.attr('data-faded');
 
                     if (dataFadedAttr != undefined) {
