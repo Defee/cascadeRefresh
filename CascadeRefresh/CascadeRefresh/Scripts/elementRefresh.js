@@ -178,76 +178,6 @@
                         default:
                             alert("there is no controllers for tag:" + actionTarget.attr("tagName"));
                     }
-                    //if (actionTarget.is('input')) {
-                    //    if (clearPrevious)
-                    //        actionTarget.val(data);
-                    //    else
-                    //        actionTarget(actionTarget.val() + data);
-                    //}
-
-                    //if (actionTarget.is('select')) {
-
-                    //    var idBinding = el.getAttribute(opts.bindings.html.select.id);
-                    //    if (idBinding == null) idBinding = opts.bindings.json.select.id;
-
-                    //    var nameBinding = el.getAttribute(opts.bindings.html.select.name);
-                    //    if (nameBinding == null) nameBinding = opts.bindings.json.select.name;
-
-                    //    var getfullAttributes = el.getAttribute(opts.bindings.html.select.specifyAllData);
-                    //    if (getfullAttributes == null) {
-                    //        getfullAttributes = opts.bindings.json.specifyAllData;
-                    //    }
-
-
-                    //    if (clearPrevious)
-                    //        actionTarget.find('option').remove();
-                    //    if (getfullAttributes) {
-
-                    //        var htmlAttrBinding = el.getAttribute(opts.bindings.html.select.htmlAttributes);
-                    //        if (htmlAttrBinding == null) htmlAttrBinding = opts.bindings.json.select.htmlAttributes;
-
-                    //        $.each(data[htmlAttrBinding], function (key, val) {
-                    //            if (key == 'class') {
-                    //                var classAtrr = actionTarget.attr(key);
-                    //                if (classAtrr != undefined && classAtrr.indexOf(val) == -1) {
-                    //                    val = classAtrr + ' ' + val;
-                    //                }
-
-                    //            }
-                    //            actionTarget.attr(key, val);
-                    //        });
-                    //        var defaultValueBinding = el.getAttribute(opts.bindings.html.select.defaultValue);
-                    //        if (defaultValueBinding == null) defaultValueBinding = opts.bindings.json.select.defaultValue;
-                    //        if (data[defaultValueBinding] != undefined && data[defaultValueBinding] != null)
-                    //            actionTarget.append('<option value>' + data[defaultValueBinding] + '</option>');
-
-
-                    //        var optionsBinding = el.getAttribute(opts.bindings.html.select.options);
-                    //        if (optionsBinding == null) optionsBinding = opts.bindings.json.select.options;
-
-                    //        $.each(data[optionsBinding], function (key, val) {
-                    //            if ($.isPlainObject(val)) {
-                    //                actionTarget.append('<option value=' + val[idBinding] + '>' + val[nameBinding] + '</option>');
-                    //            } else {
-                    //                actionTarget.append('<option value=' + key + '>' + val + '</option>');
-                    //            }
-                    //        });
-                    //        var selectValueBinding = el.getAttribute(opts.bindings.html.select.selectedValue);
-                    //        if (selectValueBinding == null) selectValueBinding = opts.bindings.json.select.selectedValue;
-                    //        if (data[selectValueBinding] != undefined && data[selectValueBinding] != null)
-                    //            actionTarget.val(data[selectValueBinding]);
-
-                    //    } else {
-                    //        $.each(data, function (key, val) {
-
-                    //            if ($.isPlainObject(val)) {
-                    //                actionTarget.append('<option value=' + val[idBinding] + '>' + val[nameBinding] + '</option>');
-                    //            } else {
-                    //                actionTarget.append('<option value=' + key + '>' + val + '</option>');
-                    //            }
-                    //        });
-                    //    }
-                   // }
                 } else {
                     actionTarget.html(data);
                 }
@@ -331,10 +261,11 @@
                         }
 
                     }
-                    if (jObj.data('chosen') != undefined) {
-                        jObj.next().fadeIn(200);
-                        jObj.trigger('chosen:updated');
-                    }
+                    
+            }
+            if (jObj.data('chosen') != undefined) {
+                jObj.next().fadeIn(200);
+                jObj.trigger('chosen:updated');
             }
        // }
     }
