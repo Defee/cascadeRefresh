@@ -14,7 +14,7 @@
         argNames.push(code);
         return Function.constructor.apply(null, argNames);
     }
-    
+
 
     $.elementRefresh = function (element, obj, options) {
         var $element = $(element),
@@ -37,73 +37,73 @@
         options = $.extend(defaults, options);
 
         var plugin = this;
-        plugin.parseJsonToSelect =function(element,jqTarget,bindings,jsonData,clearSelectData) {
-                var idBinding = element.getAttribute(bindings.html.select.id);
-                if (idBinding == null) idBinding = bindings.json.select.id;
+        plugin.parseJsonToSelect = function (element, jqTarget, bindings, jsonData, clearSelectData) {
+            var idBinding = element.getAttribute(bindings.html.select.id);
+            if (idBinding == null) idBinding = bindings.json.select.id;
 
-                var nameBinding = element.getAttribute(bindings.html.select.name);
-                if (nameBinding == null) nameBinding = bindings.json.select.name;
+            var nameBinding = element.getAttribute(bindings.html.select.name);
+            if (nameBinding == null) nameBinding = bindings.json.select.name;
 
-                var getfullAttributes = element.getAttribute(bindings.html.select.specifyAllData);
-                if (getfullAttributes == null) {
-                    getfullAttributes = bindings.json.specifyAllData;
-                }
-                if (clearSelectData)
-                    jqTarget.find('option').remove();
-                if (getfullAttributes) {
+            var getfullAttributes = element.getAttribute(bindings.html.select.specifyAllData);
+            if (getfullAttributes == null) {
+                getfullAttributes = bindings.json.specifyAllData;
+            }
+            if (clearSelectData)
+                jqTarget.find('option').remove();
+            if (getfullAttributes) {
 
-                    var htmlAttrBinding = element.getAttribute(bindings.html.select.htmlAttributes);
-                    if (htmlAttrBinding == null) htmlAttrBinding = bindings.json.select.htmlAttributes;
+                var htmlAttrBinding = element.getAttribute(bindings.html.select.htmlAttributes);
+                if (htmlAttrBinding == null) htmlAttrBinding = bindings.json.select.htmlAttributes;
 
-                    $.each(jsonData[htmlAttrBinding], function (key, val) {
-                        if (key == 'class') {
-                            var classAtrr = jqTarget.attr(key);
-                            if (classAtrr != undefined && classAtrr.indexOf(val) == -1) {
-                                val = classAtrr + ' ' + val;
-                            }
-
+                $.each(jsonData[htmlAttrBinding], function (key, val) {
+                    if (key == 'class') {
+                        var classAtrr = jqTarget.attr(key);
+                        if (classAtrr != undefined && classAtrr.indexOf(val) == -1) {
+                            val = classAtrr + ' ' + val;
                         }
-                        jqTarget.attr(key, val);
-                    });
-                    var defaultValueBinding = element.getAttribute(bindings.html.select.defaultValue);
-                    if (defaultValueBinding == null) defaultValueBinding = bindings.json.select.defaultValue;
-                    if (jsonData[defaultValueBinding] != undefined && jsonData[defaultValueBinding] != null)
-                        jqTarget.append('<option value>' + jsonData[defaultValueBinding] + '</option>');
+
+                    }
+                    jqTarget.attr(key, val);
+                });
+                var defaultValueBinding = element.getAttribute(bindings.html.select.defaultValue);
+                if (defaultValueBinding == null) defaultValueBinding = bindings.json.select.defaultValue;
+                if (jsonData[defaultValueBinding] != undefined && jsonData[defaultValueBinding] != null)
+                    jqTarget.append('<option value>' + jsonData[defaultValueBinding] + '</option>');
 
 
-                    var optionsBinding = element.getAttribute(bindings.html.select.options);
-                    if (optionsBinding == null) optionsBinding = bindings.json.select.options;
+                var optionsBinding = element.getAttribute(bindings.html.select.options);
+                if (optionsBinding == null) optionsBinding = bindings.json.select.options;
 
-                    $.each(jsonData[optionsBinding], function (key, val) {
-                        if ($.isPlainObject(val)) {
-                            
-                            console.log(idBinding);
-                            console.log(nameBinding);
-                            jqTarget.append('<option value=' + val[idBinding] + '>' + val[nameBinding] + '</option>');
-                        } else {
-                            jqTarget.append('<option value=' + key + '>' + val + '</option>');
-                        }
-                    });
-                    var selectValueBinding = element.getAttribute(bindings.html.select.selectedValue);
-                    if (selectValueBinding == null) selectValueBinding = bindings.json.select.selectedValue;
-                    if (jsonData[selectValueBinding] != undefined && jsonData[selectValueBinding] != null)
-                        jqTarget.val(jsonData[selectValueBinding]);
+                $.each(jsonData[optionsBinding], function (key, val) {
+                    if ($.isPlainObject(val)) {
 
-                } else {
-                    $.each(jsonData, function (key, val) {
+                        console.log(idBinding);
+                        console.log(nameBinding);
+                        jqTarget.append('<option value=' + val[idBinding] + '>' + val[nameBinding] + '</option>');
+                    } else {
+                        jqTarget.append('<option value=' + key + '>' + val + '</option>');
+                    }
+                });
+                var selectValueBinding = element.getAttribute(bindings.html.select.selectedValue);
+                if (selectValueBinding == null) selectValueBinding = bindings.json.select.selectedValue;
+                if (jsonData[selectValueBinding] != undefined && jsonData[selectValueBinding] != null)
+                    jqTarget.val(jsonData[selectValueBinding]);
 
-                        if ($.isPlainObject(val)) {
-                            jqTarget.append('<option value=' + val[idBinding] + '>' + val[nameBinding] + '</option>');
-                        } else {
-                            jqTarget.append('<option value=' + key + '>' + val + '</option>');
-                        }
-                    });
-                }
+            } else {
+                $.each(jsonData, function (key, val) {
+
+                    if ($.isPlainObject(val)) {
+                        jqTarget.append('<option value=' + val[idBinding] + '>' + val[nameBinding] + '</option>');
+                    } else {
+                        jqTarget.append('<option value=' + key + '>' + val + '</option>');
+                    }
+                });
+            }
 
 
-            
+
         }
-        plugin.parseJsonToInput = function (jqTarget,jsonData, clearSelectData) {
+        plugin.parseJsonToInput = function (jqTarget, jsonData, clearSelectData) {
             if (clearSelectData)
                 jqTarget.val(jsonData);
             else
@@ -113,20 +113,25 @@
             var jqCaller = $(caller);
             if (caller != null) {
                 var plugin = jqCaller.data('cascadeRefresh');
-                //TODO: Refactor to boolean in local  plugin settings named enable progress.
-                if (plugin != undefined
-                    && (caller.dataset.enableProgress == 'true' ||caller.dataset.enableProgress == 'True')
-                    && caller.dataset.loadingElement != undefined) {
-                    var currentRefreshTargetsCount = parseInt(caller.dataset.currentRefreshTargetsCount);
-                    currentRefreshTargetsCount--;
-                    caller.dataset.currentRefreshTargetsCount = currentRefreshTargetsCount;
-                    if (currentRefreshTargetsCount == 0) {
-                        plugin.hideLoadingElement(caller);
-                       // caller.dataset.currentRefreshTargetsCount = caller.dataset.refreshTargetsCount;
+                //if plugin is initialized
+                if (plugin != undefined) {
+                    //get the plugin settings
+                    var settings = plugin.settings;
+                    //is progress enabled flag
+                    var progress = caller.getAttribute(settings.bindings.enableLoadIndicatorBinding);
+                    //loading element
+                    var loadingElement = caller.getAttribute(settings.bindings.loadIndicatorBinding);
+                    if ((progress == 'true' || progress == 'True')
+                        && loadingElement != undefined) {
+                        var currentRefreshTargetsCount =
+                            parseInt(caller.getAttribute(settings.bindings.currentRefreshTargetsCountBinding));
+                        currentRefreshTargetsCount--;
+                        caller.setAttribute(settings.bindings.currentRefreshTargetsCountBinding, currentRefreshTargetsCount);
+                        if (currentRefreshTargetsCount == 0) {
+                            plugin.hideLoadingElement(caller, settings);
+                        }
                     }
                 }
-                
-                
             }
         };
         plugin.init = function () {
@@ -171,10 +176,10 @@
                     switch (actionTarget[0].tagName.toLowerCase()) {
                         case "input":
                             plugin.parseJsonToInput(actionTarget, data, clearPrevious);
-                        break;
+                            break;
                         case "select":
                             plugin.parseJsonToSelect(el, actionTarget, opts.bindings, data, clearPrevious);
-                    break;
+                            break;
                         default:
                             alert("there is no controllers for tag:" + actionTarget.attr("tagName"));
                     }
@@ -211,17 +216,17 @@
                 error: function (jqXhr, status, error) {
 
                     getFunction(el.getAttribute("data-ajax-error"), ["jqXhr", "status", "error"]).apply(el, arguments);
-                }, 
+                },
                 beforeSend: function (jqXhr) {
-                        var result;
-                        result = getFunction(el.getAttribute("data-ajax-send"), ["jqXhr"]).apply(el, arguments);
-                        if (result !== false) {
-                            //loading.show(duration);
-                        }
-                        return result;
-                    },
+                    var result;
+                    result = getFunction(el.getAttribute("data-ajax-send"), ["jqXhr"]).apply(el, arguments);
+                    if (result !== false) {
+                        //loading.show(duration);
+                    }
+                    return result;
+                },
                 complete: function (jqXhr, status) {
-                    
+
                     plugin.processCallerAjaxPackages(opts.caller);
                     $(el).trigger('refresh.RefreshComplited');
 
@@ -242,32 +247,32 @@
     function showAction(jObj, actionName) {
 
         //if (actionName == undefined || actionName == false) {
-            switch (actionName) {
-                case "disable":
-                    var disabledAttr = jObj.attr('data-disabled');
-                    if (disabledAttr != undefined) {
-                        jObj.removeAttr('disabled');
-                        jObj.removeAttr('data-disabled');
-                    }
-                    break;
-                default:
-                    
-                    var dataFadedAttr = jObj.attr('data-faded');
+        switch (actionName) {
+            case "disable":
+                var disabledAttr = jObj.attr('data-disabled');
+                if (disabledAttr != undefined) {
+                    jObj.removeAttr('disabled');
+                    jObj.removeAttr('data-disabled');
+                }
+                break;
+            default:
 
-                    if (dataFadedAttr != undefined) {
-                        jObj.removeAttr('data-faded');
-                        if (jObj.data('chosen') == undefined) {
-                            jObj.fadeIn(200);
-                        }
+                var dataFadedAttr = jObj.attr('data-faded');
 
+                if (dataFadedAttr != undefined) {
+                    jObj.removeAttr('data-faded');
+                    if (jObj.data('chosen') == undefined) {
+                        jObj.fadeIn(200);
                     }
-                    
-            }
-            if (jObj.data('chosen') != undefined) {
-                jObj.next().fadeIn(200);
-                jObj.trigger('chosen:updated');
-            }
-       // }
+
+                }
+
+        }
+        if (jObj.data('chosen') != undefined) {
+            jObj.next().fadeIn(200);
+            jObj.trigger('chosen:updated');
+        }
+        // }
     }
     $.elementRefresh.setGlobalBindings = function (bindings, bindingType) {
         switch (bindingType) {
